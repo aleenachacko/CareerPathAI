@@ -1,0 +1,52 @@
+<div class="profile-container">
+  <h2>User Profile</h2>
+
+  <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input id="name" type="text" formControlName="name" />
+      <div *ngIf="profileForm.get('name')?.invalid && profileForm.get('name')?.touched" class="error">
+        Name is required.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input id="email" type="email" formControlName="email" />
+      <div *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched" class="error">
+        Valid email is required.
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="isLoading || profileForm.invalid">Update Profile</button>
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+    <div *ngIf="successMessage" class="success">{{ successMessage }}</div>
+  </form>
+
+  <hr />
+
+  <h3>Change Password</h3>
+  <form [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+    <div class="form-group">
+      <label for="currentPassword">Current Password</label>
+      <input id="currentPassword" type="password" formControlName="currentPassword" />
+    </div>
+    <div class="form-group">
+      <label for="newPassword">New Password</label>
+      <input id="newPassword" type="password" formControlName="newPassword" />
+      <div *ngIf="passwordForm.get('newPassword')?.invalid && passwordForm.get('newPassword')?.touched" class="error">
+        New password must be at least 6 characters.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="confirmPassword">Confirm New Password</label>
+      <input id="confirmPassword" type="password" formControlName="confirmPassword" />
+      <div *ngIf="passwordForm.hasError('mismatch') && passwordForm.get('confirmPassword')?.touched" class="error">
+        Passwords do not match.
+      </div>
+    </div>
+    <button type="submit" [disabled]="isLoading || passwordForm.invalid">Change Password</button>
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+    <div *ngIf="successMessage" class="success">{{ successMessage }}</div>
+  </form>
+</div>

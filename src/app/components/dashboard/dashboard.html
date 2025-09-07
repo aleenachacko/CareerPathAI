@@ -1,0 +1,70 @@
+<div class="container py-5">
+    <h1 class="mb-4">Dashboard</h1>
+    <div *ngIf="isLoading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+    <div *ngIf="!isLoading" class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h2 class="h5 card-title">Career Profile</h2>
+                    <div *ngIf="careerStats.hasProfile; else noCareerProfile">
+                        <p class="card-text">Your career profile is complete!</p>
+                        <p class="text-muted small">Last updated: {{ careerStats.lastUpdated | date }}</p>
+                        <a routerLink="/career-recommendations" class="btn btn-primary">View Recommendations</a>
+                    </div>
+                    <ng-template #noCareerProfile>
+                        <p class="card-text">You haven't set up your career profile yet.</p>
+                        <a routerLink="/career-recommendations" class="btn btn-outline-primary">Set Up Profile</a>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h2 class="h5 card-title">Resume Builder</h2>
+                    <div *ngIf="resumeStats.count > 0; else noResumes">
+                        <p class="card-text">You have {{ resumeStats.count }} saved resume(s).</p>
+                        <p class="text-muted small">Last updated: {{ resumeStats.lastUpdated | date }}</p>
+                        <a routerLink="/resume-builder" class="btn btn-primary">Manage Resumes</a>
+                    </div>
+                    <ng-template #noResumes>
+                        <p class="card-text">You haven't created any resumes yet.</p>
+                        <a routerLink="/resume-builder" class="btn btn-outline-primary">Create Resume</a>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h2 class="h5 card-title">Skill Gap Analysis</h2>
+                    <div *ngIf="skillStats.hasAnalysis; else noSkillAnalysis">
+                        <p class="card-text">You have {{ skillStats.missingSkills }} skills to develop.</p>
+                        <p class="text-muted small">Last updated: {{ skillStats.lastUpdated | date }}</p>
+                        <a routerLink="/skill-gap-analysis" class="btn btn-primary">View Analysis</a>
+                    </div>
+                    <ng-template #noSkillAnalysis>
+                        <p class="card-text">You haven't completed a skill gap analysis yet.</p>
+                        <a routerLink="/skill-gap-analysis" class="btn btn-outline-primary">Start Analysis</a>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 mt-4">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="h5 card-title">Quick Actions</h2>
+                    <div class="d-flex gap-3">
+                        <a routerLink="/career-recommendations" class="btn btn-outline-secondary">Get Career Advice</a>
+                        <a routerLink="/resume-builder" class="btn btn-outline-secondary">Build New Resume</a>
+                        <a routerLink="/skill-gap-analysis" class="btn btn-outline-secondary">Analyze Skills</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

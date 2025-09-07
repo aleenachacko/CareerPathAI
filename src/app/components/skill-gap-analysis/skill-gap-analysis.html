@@ -1,0 +1,42 @@
+<div class="skill-gap-analysis-container">
+  <h2>Skill Gap Analysis</h2>
+
+  <form [formGroup]="analysisForm" (ngSubmit)="$event.preventDefault()">
+    <div class="skills-section">
+      <h3>Current Skills</h3>
+      <div class="add-skill">
+        <input type="text" formControlName="newCurrentSkill" placeholder="Add current skill" />
+        <button type="button" (click)="addCurrentSkill()">Add</button>
+      </div>
+      <ul>
+        <li *ngFor="let skill of currentSkills; let i = index">
+          {{ skill }} <button type="button" (click)="removeCurrentSkill(i)">Remove</button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="skills-section">
+      <h3>Desired Skills</h3>
+      <div class="add-skill">
+        <input type="text" formControlName="newDesiredSkill" placeholder="Add desired skill" />
+        <button type="button" (click)="addDesiredSkill()">Add</button>
+      </div>
+      <ul>
+        <li *ngFor="let skill of desiredSkills; let i = index">
+          {{ skill }} <button type="button" (click)="removeDesiredSkill(i)">Remove</button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="actions">
+      <button type="button" (click)="analyzeSkills()" [disabled]="isLoading">Analyze Skills</button>
+      <button type="button" (click)="saveAnalysis()" [disabled]="isLoading || !analysisResult">Save Analysis</button>
+    </div>
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+  </form>
+
+  <div *ngIf="analysisResult" class="analysis-result">
+    <h3>Analysis Result</h3>
+    <pre>{{ analysisResult | json }}</pre>
+  </div>
+</div>

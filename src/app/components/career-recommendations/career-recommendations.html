@@ -1,0 +1,48 @@
+<div class="career-recommendations-container">
+  <h2>Career Recommendations</h2>
+
+  <form [formGroup]="careerForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="skills">Skills</label>
+      <input id="skills" type="text" formControlName="skills" placeholder="Enter your skills" />
+      <div *ngIf="careerForm.get('skills')?.invalid && careerForm.get('skills')?.touched" class="error">
+        Skills are required.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="interests">Interests</label>
+      <input id="interests" type="text" formControlName="interests" placeholder="Enter your interests" />
+      <div *ngIf="careerForm.get('interests')?.invalid && careerForm.get('interests')?.touched" class="error">
+        Interests are required.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="experience">Experience</label>
+      <input id="experience" type="text" formControlName="experience" placeholder="Enter your experience" />
+      <div *ngIf="careerForm.get('experience')?.invalid && careerForm.get('experience')?.touched" class="error">
+        Experience is required.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="education">Education</label>
+      <input id="education" type="text" formControlName="education" placeholder="Enter your education" />
+      <div *ngIf="careerForm.get('education')?.invalid && careerForm.get('education')?.touched" class="error">
+        Education is required.
+      </div>
+    </div>
+    <button type="submit" [disabled]="isLoading || careerForm.invalid">Get Recommendations</button>
+    <button type="button" (click)="saveProfile()" [disabled]="isLoading || careerForm.invalid">Save Profile</button>
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+  </form>
+
+  <hr />
+
+  <h3>Recommendations</h3>
+  <div *ngIf="isLoading">Loading recommendations...</div>
+  <div *ngIf="!isLoading && recommendations.length === 0">No recommendations yet.</div>
+  <ul>
+    <li *ngFor="let rec of recommendations">
+      <strong>{{ rec.title }}</strong>: {{ rec.description }}
+    </li>
+  </ul>
+</div>

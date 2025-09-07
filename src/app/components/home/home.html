@@ -1,0 +1,59 @@
+<div class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">Career Navigator AI</h1>
+                <p class="lead mb-4">Your personalized career guidance platform powered by artificial intelligence</p>
+                <div class="d-flex gap-3">
+                    <a *ngIf="!isLoggedIn" routerLink="/register" class="btn btn-primary btn-lg px-4">Get Started</a>
+                    <a *ngIf="!isLoggedIn" routerLink="/login" class="btn btn-outline-primary btn-lg px-4">Login</a>
+                    <a *ngIf="isLoggedIn" routerLink="/dashboard" class="btn btn-primary btn-lg px-4">Go to
+                        Dashboard</a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <img src="assets/images/careernav.png" alt="Career Guidance" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</div>
+<section class="features-section py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">How It Works</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="feature-icon mb-3">
+                            <i class="bi bi-graph-up text-primary" style="font-size: 2rem;"></i>
+                        </div>
+                        <h3 class="h5">Career Recommendations</h3>
+                        <p>Get personalized career suggestions based on your skills, interests, and experience.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="feature-icon mb-3">
+                            <i class="bi bi-file-earmark-person text-primary" style="font-size: 2rem;"></i>
+                        </div>
+                        <h3 class="h5">Resume Builder</h3>
+                        <p>Create professional resumes tailored to your desired job positions.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="feature-icon mb-3">
+                            <i class="bi bi-clipboard2-pulse text-primary" style="font-size: 2rem;"></i>
+                        </div>
+                        <h3 class="h5">Skill Gap Analysis</h3>
+                        <p>Identify missing skills and get recommendations to bridge the gap.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

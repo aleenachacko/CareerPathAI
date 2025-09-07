@@ -1,0 +1,41 @@
+<div class="resume-builder-container">
+  <h2>Resume Builder</h2>
+
+  <form [formGroup]="resumeForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input id="title" type="text" formControlName="title" />
+      <div *ngIf="resumeForm.get('title')?.invalid && resumeForm.get('title')?.touched" class="error">
+        Title is required.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="summary">Summary</label>
+      <textarea id="summary" formControlName="summary"></textarea>
+      <div *ngIf="resumeForm.get('summary')?.invalid && resumeForm.get('summary')?.touched" class="error">
+        Summary is required.
+      </div>
+    </div>
+
+    <!-- You can add dynamic form arrays for experience, education, skills, certifications here -->
+
+    <button type="submit" [disabled]="isLoading || resumeForm.invalid">
+      {{ isEditing ? 'Update Resume' : 'Create Resume' }}
+    </button>
+    <button type="button" (click)="resetForm()" [disabled]="isLoading">Reset</button>
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+  </form>
+
+  <hr />
+
+  <h3>Your Resumes</h3>
+  <div *ngIf="resumes.length === 0">No resumes found.</div>
+  <ul>
+    <li *ngFor="let resume of resumes">
+      <strong>{{ resume.title }}</strong> - {{ resume.summary }}
+      <button (click)="editResume(resume)">Edit</button>
+      <button (click)="deleteResume(resume.id)">Delete</button>
+    </li>
+  </ul>
+</div>
