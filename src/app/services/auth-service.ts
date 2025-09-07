@@ -14,9 +14,13 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) {
     this.checkAuthStatus();
   }
+private getAuthHeaders(): { [header: string]: string } {
+  const token = localStorage.getItem('token');
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
 
-  private checkAuthStatus() {
-    const token = localStorage.getItem('token');
+private checkAuthStatus() {
+  const token = localStorage.getItem('token');
     this.isLoggedInSubject.next(!!token);
   }
 
@@ -45,7 +49,9 @@ export class AuthService {
   }
 
   getCurrentUser() {
-    return this.http.get(`${this.apiUrl}/me`);
+    return this.http.get(`${this.apiUrl}/me`, {
+      headers: this.getAuthHeaders()
+    });
   }
 
   getToken() {

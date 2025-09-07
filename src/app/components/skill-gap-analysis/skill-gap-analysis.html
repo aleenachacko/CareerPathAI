@@ -1,42 +1,61 @@
-<div class="skill-gap-analysis-container">
-  <h2>Skill Gap Analysis</h2>
-
-  <form [formGroup]="analysisForm" (ngSubmit)="$event.preventDefault()">
-    <div class="skills-section">
-      <h3>Current Skills</h3>
-      <div class="add-skill">
-        <input type="text" formControlName="newCurrentSkill" placeholder="Add current skill" />
-        <button type="button" (click)="addCurrentSkill()">Add</button>
-      </div>
-      <ul>
-        <li *ngFor="let skill of currentSkills; let i = index">
-          {{ skill }} <button type="button" (click)="removeCurrentSkill(i)">Remove</button>
-        </li>
-      </ul>
+<div class="container mt-4">
+  <div class="card shadow">
+    <div class="card-header bg-secondary text-white">
+      <h4 class="mb-0">Skill Gap Analysis</h4>
     </div>
 
-    <div class="skills-section">
-      <h3>Desired Skills</h3>
-      <div class="add-skill">
-        <input type="text" formControlName="newDesiredSkill" placeholder="Add desired skill" />
-        <button type="button" (click)="addDesiredSkill()">Add</button>
-      </div>
-      <ul>
-        <li *ngFor="let skill of desiredSkills; let i = index">
-          {{ skill }} <button type="button" (click)="removeDesiredSkill(i)">Remove</button>
-        </li>
-      </ul>
-    </div>
+    <div class="card-body">
+      <form [formGroup]="analysisForm" (ngSubmit)="$event.preventDefault()">
+        <div class="row">
+          <!-- Current Skills -->
+          <div class="col-md-6 mb-4">
+            <h5>Current Skills</h5>
+            <div class="input-group mb-2">
+              <input type="text" class="form-control" formControlName="newCurrentSkill" placeholder="Add current skill" />
+              <button type="button" class="btn btn-outline-primary" (click)="addCurrentSkill()">Add</button>
+            </div>
+            <ul class="list-group">
+              <li *ngFor="let skill of currentSkills; let i = index" class="list-group-item d-flex justify-content-between align-items-center">
+                {{ skill }}
+                <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeCurrentSkill(i)">Remove</button>
+              </li>
+            </ul>
+          </div>
 
-    <div class="actions">
-      <button type="button" (click)="analyzeSkills()" [disabled]="isLoading">Analyze Skills</button>
-      <button type="button" (click)="saveAnalysis()" [disabled]="isLoading || !analysisResult">Save Analysis</button>
-    </div>
-    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
-  </form>
+          <!-- Desired Skills -->
+          <div class="col-md-6 mb-4">
+            <h5>Desired Skills</h5>
+            <div class="input-group mb-2">
+              <input type="text" class="form-control" formControlName="newDesiredSkill" placeholder="Add desired skill" />
+              <button type="button" class="btn btn-outline-success" (click)="addDesiredSkill()">Add</button>
+            </div>
+            <ul class="list-group">
+              <li *ngFor="let skill of desiredSkills; let i = index" class="list-group-item d-flex justify-content-between align-items-center">
+                {{ skill }}
+                <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeDesiredSkill(i)">Remove</button>
+              </li>
+            </ul>
+          </div>
+        </div>
 
-  <div *ngIf="analysisResult" class="analysis-result">
-    <h3>Analysis Result</h3>
-    <pre>{{ analysisResult | json }}</pre>
+        <!-- Action Buttons -->
+        <div class="d-flex gap-2 mt-3">
+          <button type="button" class="btn btn-primary" (click)="analyzeSkills()" [disabled]="isLoading">Analyze Skills</button>
+          <button type="button" class="btn btn-outline-secondary" (click)="saveAnalysis()" [disabled]="isLoading || !analysisResult">Save Analysis</button>
+        </div>
+
+        <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Analysis Result -->
+  <div *ngIf="analysisResult" class="card shadow mt-4">
+    <div class="card-header bg-light">
+      <h5 class="mb-0">Analysis Result</h5>
+    </div>
+    <div class="card-body">
+      <pre class="bg-dark text-white p-3 rounded">{{ analysisResult | json }}</pre>
+    </div>
   </div>
 </div>

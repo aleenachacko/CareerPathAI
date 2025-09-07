@@ -1,48 +1,69 @@
-<div class="career-recommendations-container">
-  <h2>Career Recommendations</h2>
+<div class="container mt-4">
+  <div class="card shadow">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">Career Recommendations</h4>
+    </div>
 
-  <form [formGroup]="careerForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="skills">Skills</label>
-      <input id="skills" type="text" formControlName="skills" placeholder="Enter your skills" />
-      <div *ngIf="careerForm.get('skills')?.invalid && careerForm.get('skills')?.touched" class="error">
-        Skills are required.
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="interests">Interests</label>
-      <input id="interests" type="text" formControlName="interests" placeholder="Enter your interests" />
-      <div *ngIf="careerForm.get('interests')?.invalid && careerForm.get('interests')?.touched" class="error">
-        Interests are required.
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="experience">Experience</label>
-      <input id="experience" type="text" formControlName="experience" placeholder="Enter your experience" />
-      <div *ngIf="careerForm.get('experience')?.invalid && careerForm.get('experience')?.touched" class="error">
-        Experience is required.
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="education">Education</label>
-      <input id="education" type="text" formControlName="education" placeholder="Enter your education" />
-      <div *ngIf="careerForm.get('education')?.invalid && careerForm.get('education')?.touched" class="error">
-        Education is required.
-      </div>
-    </div>
-    <button type="submit" [disabled]="isLoading || careerForm.invalid">Get Recommendations</button>
-    <button type="button" (click)="saveProfile()" [disabled]="isLoading || careerForm.invalid">Save Profile</button>
-    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
-  </form>
+    <div class="card-body">
+      <form [formGroup]="careerForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="skills" class="form-label">Skills</label>
+            <input id="skills" type="text" class="form-control" formControlName="skills" placeholder="Enter your skills" />
+            <div *ngIf="careerForm.get('skills')?.invalid && careerForm.get('skills')?.touched" class="text-danger small">
+              Skills are required.
+            </div>
+          </div>
 
-  <hr />
+          <div class="col-md-6 mb-3">
+            <label for="interests" class="form-label">Interests</label>
+            <input id="interests" type="text" class="form-control" formControlName="interests" placeholder="Enter your interests" />
+            <div *ngIf="careerForm.get('interests')?.invalid && careerForm.get('interests')?.touched" class="text-danger small">
+              Interests are required.
+            </div>
+          </div>
 
-  <h3>Recommendations</h3>
-  <div *ngIf="isLoading">Loading recommendations...</div>
-  <div *ngIf="!isLoading && recommendations.length === 0">No recommendations yet.</div>
-  <ul>
-    <li *ngFor="let rec of recommendations">
-      <strong>{{ rec.title }}</strong>: {{ rec.description }}
-    </li>
-  </ul>
+          <div class="col-md-6 mb-3">
+            <label for="experience" class="form-label">Experience</label>
+            <input id="experience" type="text" class="form-control" formControlName="experience" placeholder="Enter your experience" />
+            <div *ngIf="careerForm.get('experience')?.invalid && careerForm.get('experience')?.touched" class="text-danger small">
+              Experience is required.
+            </div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="education" class="form-label">Education</label>
+            <input id="education" type="text" class="form-control" formControlName="education" placeholder="Enter your education" />
+            <div *ngIf="careerForm.get('education')?.invalid && careerForm.get('education')?.touched" class="text-danger small">
+              Education is required.
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex gap-2 mt-3">
+          <button type="submit" class="btn btn-primary" [disabled]="isLoading || careerForm.invalid">Get Recommendations</button>
+          <button type="button" class="btn btn-outline-success" (click)="saveProfile()" [disabled]="isLoading || careerForm.invalid">Save Profile</button>
+        </div>
+
+        <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
+      </form>
+    </div>
+  </div>
+
+  <div class="card shadow mt-4">
+    <div class="card-header bg-light">
+      <h5 class="mb-0">Recommendations</h5>
+    </div>
+    <div class="card-body">
+      <div *ngIf="isLoading" class="text-muted">Loading recommendations...</div>
+      <div *ngIf="!isLoading && recommendations.length === 0" class="text-muted">No recommendations yet.</div>
+
+      <ul class="list-group">
+        <li *ngFor="let rec of recommendations" class="list-group-item">
+          <h6 class="mb-1">{{ rec.title }}</h6>
+          <p class="mb-0 text-muted">{{ rec.description }}</p>
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>

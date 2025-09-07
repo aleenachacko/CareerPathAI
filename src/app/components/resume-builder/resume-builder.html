@@ -1,41 +1,61 @@
-<div class="resume-builder-container">
-  <h2>Resume Builder</h2>
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          <h2 class="mb-0">{{ isEditing ? 'Edit Resume' : 'Create Resume' }}</h2>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="resumeForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label for="title" class="form-label">Title</label>
+              <input id="title" type="text" class="form-control" formControlName="title" placeholder="e.g. Software Engineer" />
+              <div *ngIf="resumeForm.get('title')?.invalid && resumeForm.get('title')?.touched" class="text-danger small">
+                Title is required.
+              </div>
+            </div>
 
-  <form [formGroup]="resumeForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="title">Title</label>
-      <input id="title" type="text" formControlName="title" />
-      <div *ngIf="resumeForm.get('title')?.invalid && resumeForm.get('title')?.touched" class="error">
-        Title is required.
+            <div class="mb-3">
+              <label for="summary" class="form-label">Summary</label>
+              <textarea id="summary" class="form-control" formControlName="summary" rows="3" placeholder="Brief summary about yourself"></textarea>
+              <div *ngIf="resumeForm.get('summary')?.invalid && resumeForm.get('summary')?.touched" class="text-danger small">
+                Summary is required.
+              </div>
+            </div>
+
+            <!-- Add dynamic form arrays for experience, education, skills, certifications here -->
+
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-primary" [disabled]="isLoading || resumeForm.invalid">
+                {{ isEditing ? 'Update Resume' : 'Create Resume' }}
+              </button>
+              <button type="button" class="btn btn-secondary" (click)="resetForm()" [disabled]="isLoading">Reset</button>
+            </div>
+            <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
+          </form>
+        </div>
+      </div>
+
+      <div class="card shadow mt-4">
+        <div class="card-header bg-light">
+          <h3 class="mb-0">Your Resumes</h3>
+        </div>
+        <div class="card-body">
+          <div *ngIf="resumes.length === 0" class="text-muted">No resumes found.</div>
+          <ul class="list-group">
+            <li *ngFor="let resume of resumes" class="list-group-item d-flex justify-content-between align-items-center">
+              <div>
+                <strong>{{ resume.resume_data.title }}</strong>
+              <div class="text-muted small">{{ resume.resume_data.summary }}</div>    
+              </div>
+              <div>
+                <button class="btn btn-sm btn-outline-primary me-2" (click)="editResume(resume)">Edit</button>
+                <button class="btn btn-sm btn-outline-danger" (click)="deleteResume(resume.id)">Delete</button>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
-
-    <div class="form-group">
-      <label for="summary">Summary</label>
-      <textarea id="summary" formControlName="summary"></textarea>
-      <div *ngIf="resumeForm.get('summary')?.invalid && resumeForm.get('summary')?.touched" class="error">
-        Summary is required.
-      </div>
-    </div>
-
-    <!-- You can add dynamic form arrays for experience, education, skills, certifications here -->
-
-    <button type="submit" [disabled]="isLoading || resumeForm.invalid">
-      {{ isEditing ? 'Update Resume' : 'Create Resume' }}
-    </button>
-    <button type="button" (click)="resetForm()" [disabled]="isLoading">Reset</button>
-    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
-  </form>
-
-  <hr />
-
-  <h3>Your Resumes</h3>
-  <div *ngIf="resumes.length === 0">No resumes found.</div>
-  <ul>
-    <li *ngFor="let resume of resumes">
-      <strong>{{ resume.title }}</strong> - {{ resume.summary }}
-      <button (click)="editResume(resume)">Edit</button>
-      <button (click)="deleteResume(resume.id)">Delete</button>
-    </li>
-  </ul>
+  </div>
 </div>

@@ -1,0 +1,7 @@
+.text-danger {
+  font-size: 0.875rem;
+}
+
+.card-header h4, .card-header h5 {
+  margin-bottom: 0;
+}
