@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { SkillsService } from '../../services/skills-service';
 import { AuthService } from '../../services/auth-service';
+import { SessionService } from '../../SessionService';
 
 @Component({
   selector: 'app-skill-gap-analysis',
@@ -16,10 +17,13 @@ export class SkillGapAnalysis implements OnInit {
   analysisResult: any = null;
   isLoading = false;
   errorMessage = '';
+   userId: string | null = null;
+
   constructor(
     private fb: FormBuilder,
     private skillsService: SkillsService,
-    private authService: AuthService
+    private authService: AuthService,
+    private sessionService: SessionService
   ) {
     this.analysisForm = this.fb.group({
       newCurrentSkill: [''],
@@ -27,10 +31,11 @@ export class SkillGapAnalysis implements OnInit {
     });
   }
   ngOnInit(): void {
+     this.userId = this.sessionService.getUserId();
     this.loadSkillAnalysis();
   }
   loadSkillAnalysis() {
-    this.skillsService.getSkillAnalysis().subscribe({
+    this.skillsService.getSkillAnalysis(this.userId!).subscribe({
       next: (analysis) => {
         if (analysis) {
           this.currentSkills = analysis.current_skills || [];

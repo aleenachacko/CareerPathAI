@@ -2,30 +2,42 @@ import { Component, OnInit } from '@angular/core';
 import { CareerService } from '../../services/career-service';
 import { ResumeService } from '../../services/resume-service';
 import { SkillsService } from '../../services/skills-service';
+import { SessionService } from '../../SessionService';
 
 @Component({
   selector: 'app-dashboard',
   standalone: false,
   templateUrl: './dashboard.html',
-  styleUrl: './dashboard.css'
+  styleUrls: ['./dashboard.css'] // ✅ corrected from styleUrl
 })
-export class Dashboard implements OnInit{
+export class Dashboard implements OnInit {
   careerStats: any;
   resumeStats: any;
   skillStats: any;
   isLoading = true;
-  //userId: string = ''; // TODO: Assign actual user ID from authentication context or user service
+  userId: string | null = null;
 
   constructor(
     private careerService: CareerService,
     private resumeService: ResumeService,
-    private skillsService: SkillsService
-  ) { }
+    private skillsService: SkillsService,
+    private sessionService: SessionService
+  ) {}
+
   ngOnInit(): void {
+    this.userId = this.sessionService.getUserId();
+
+    if (!this.userId) {
+      console.warn('No userId found in session. Redirecting or showing login...');
+      // Optionally redirect to login or show error
+      return;
+    }
+
     this.loadDashboardData();
   }
-  loadDashboardData() {
-    this.careerService.getUserCareerProfile().subscribe({
+
+  loadDashboardData(): void {
+    this.careerService.getUserCareerProfile(this.userId!).subscribe({
       next: (data) => {
         this.careerStats = {
           hasProfile: !!data,
@@ -33,9 +45,10 @@ export class Dashboard implements OnInit{
         };
         this.checkLoadingComplete();
       },
-      error: (err) => console.error(err)
+      error: (err) => console.error('CareerService error:', err)
     });
-    this.resumeService.getResumes('16').subscribe({
+
+    this.resumeService.getResumes(this.userId!).subscribe({
       next: (data) => {
         this.resumeStats = {
           count: data.length,
@@ -43,9 +56,10 @@ export class Dashboard implements OnInit{
         };
         this.checkLoadingComplete();
       },
-      error: (err) => console.error(err)
+      error: (err) => console.error('ResumeService error:', err)
     });
-    this.skillsService.getSkillAnalysis().subscribe({
+
+    this.skillsService.getSkillAnalysis(this.userId!).subscribe({
       next: (data) => {
         this.skillStats = {
           hasAnalysis: !!data,
@@ -54,10 +68,11 @@ export class Dashboard implements OnInit{
         };
         this.checkLoadingComplete();
       },
-      error: (err) => console.error(err)
+      error: (err) => console.error('SkillsService error:', err)
     });
   }
-  checkLoadingComplete() {
+
+  checkLoadingComplete(): void {
     if (this.careerStats && this.resumeStats && this.skillStats) {
       this.isLoading = false;
     }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CareerService } from '../../services/career-service';
+import { SessionService } from '../../SessionService';
 
 @Component({
   selector: 'app-career-recommendations',
@@ -13,10 +14,11 @@ careerForm: FormGroup;
   recommendations: any[] = [];
   isLoading = false;
   errorMessage = '';
-
+  userId: string | null = null;
   constructor(
     private fb: FormBuilder,
-    private careerService: CareerService
+    private careerService: CareerService,
+    private sessionService: SessionService
   ) {
     this.careerForm = this.fb.group({
       skills: ['', Validators.required],
@@ -27,11 +29,17 @@ careerForm: FormGroup;
   }
 
   ngOnInit(): void {
+     this.userId = this.sessionService.getUserId();
+      if (!this.userId) {
+      console.warn('No userId found in session. Redirecting or showing login...');
+      // Optionally redirect to login or show error
+      return;
+    }
     this.loadUserCareerData();
   }
 
   loadUserCareerData() {
-    this.careerService.getUserCareerProfile().subscribe({
+    this.careerService.getUserCareerProfile(this.userId !).subscribe({
       next: (data) => {
         if (data) {
           this.careerForm.patchValue(data);
