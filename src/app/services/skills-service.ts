@@ -22,8 +22,11 @@ export class SkillsService {
 
 
   analyzeSkills(skillData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/analyze`, skillData)
+    return this.http.post(`${this.apiUrl}/analyze`, skillData, {
+      headers: this.getAuthHeaders()
+        });
   }
+  
   saveSkillAnalysis(analysisData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/save`, analysisData);
   }
