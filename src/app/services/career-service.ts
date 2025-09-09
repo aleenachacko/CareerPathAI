@@ -17,13 +17,15 @@ export class CareerService {
   }
   
  
-  getRecommendations(profileData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/recommendations`, profileData, {
+  getRecommendations(userId: string,profileData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/recommendations/${userId}`, profileData, {
       headers: this.getAuthHeaders()
     });
   }
-  saveCareerProfile(profileData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/saveProfile`, profileData);
+  saveCareerProfile(userId: string,profileData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/saveProfile/${userId}`, profileData, {
+      headers: this.getAuthHeaders()
+    });
   }
 
  getUserCareerProfile(userId: string): Observable<any> {

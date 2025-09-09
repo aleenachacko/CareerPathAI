@@ -56,14 +56,24 @@
     </div>
     <div class="card-body">
       <div *ngIf="isLoading" class="text-muted">Loading recommendations...</div>
-      <div *ngIf="!isLoading && recommendations.length === 0" class="text-muted">No recommendations yet.</div>
 
-      <ul class="list-group">
+      <div *ngIf="!isLoading && recommendations.length === 0 && !rawText" class="text-muted">
+        No recommendations yet.
+      </div>
+
+      <!-- Structured recommendations -->
+      <ul class="list-group" *ngIf="recommendations.length > 0">
         <li *ngFor="let rec of recommendations" class="list-group-item">
           <h6 class="mb-1">{{ rec.title }}</h6>
           <p class="mb-0 text-muted">{{ rec.description }}</p>
         </li>
       </ul>
+
+      <!-- Raw fallback response -->
+      <div *ngIf="!isLoading && rawText && recommendations.length === 0" class="mt-3">
+        <h6 class="text-secondary">Raw Response:</h6>
+        <p class="text-muted">{{ rawText }}</p>
+      </div>
     </div>
   </div>
 </div>

@@ -15,6 +15,8 @@ careerForm: FormGroup;
   isLoading = false;
   errorMessage = '';
   userId: string | null = null;
+  rawText: string = '';
+
   constructor(
     private fb: FormBuilder,
     private careerService: CareerService,
@@ -56,9 +58,9 @@ careerForm: FormGroup;
       this.isLoading = true;
       this.errorMessage = '';
       
-      this.careerService.getRecommendations(this.careerForm.value).subscribe({
+      this.careerService.getRecommendations(this.userId !,this.careerForm.value).subscribe({
         next: (data) => {
-          this.recommendations = data.recommendations;
+        this.rawText = data.rawText || ''; 
           this.isLoading = false;
         },
         error: (err) => {
@@ -72,7 +74,7 @@ careerForm: FormGroup;
 
   saveProfile() {
     if (this.careerForm.valid) {
-      this.careerService.saveCareerProfile(this.careerForm.value).subscribe({
+      this.careerService.saveCareerProfile(this.userId !,this.careerForm.value).subscribe({
         next: () => {
           alert('Career profile saved successfully!');
         },

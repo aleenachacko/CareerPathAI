@@ -22,7 +22,8 @@ export class UserService {
     });
   }
   changePassword(id: String,passwordData: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/password/${id}`, passwordData);
-  }
+    return this.http.put(`${this.apiUrl}/password/${id}`, passwordData, {
+      headers: this.getAuthHeaders()
+    });
 }
-
+}

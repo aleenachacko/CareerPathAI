@@ -30,6 +30,7 @@ export class Dashboard implements OnInit {
     if (!this.userId) {
       console.warn('No userId found in session. Redirecting or showing login...');
       // Optionally redirect to login or show error
+       this.loadDashboardData();
       return;
     }
 

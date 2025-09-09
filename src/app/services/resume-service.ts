@@ -29,7 +29,7 @@ export class ResumeService {
   }
 
   updateResume(id: number, resumeData: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/resume${id}`, resumeData, {
+    return this.http.put(`${this.apiUrl}/resume/${id}`, resumeData, {
       headers: this.getAuthHeaders()
     });
   }
