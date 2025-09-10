@@ -74,6 +74,12 @@
       <div *ngIf="!isLoading && recommendations.length === 0 && !rawText" class="text-muted">
         No recommendations yet.
       </div>
+   <div class="text-center my-4" *ngIf="isLoading">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Calibrating your CareerCraft AI...</span>
+  </div>
+  <div class="mt-2 text-muted">Calibrating your CareerCraft AI...</div>
+</div>
 
       <!-- Structured Recommendations -->
      <ul class="list-group" *ngIf="recommendations.length > 0">

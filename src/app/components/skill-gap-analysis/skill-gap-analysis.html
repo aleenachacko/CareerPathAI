@@ -49,6 +49,17 @@
       </form>
     </div>
   </div>
+<div class="text-center my-4" *ngIf="isLoaading">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Analyzing skills...</span>
+  </div>
+  <div class="mt-2 text-muted">Analyzing skills...</div>
+</div>
+
+<div class="dot-loader" *ngIf="isLoaading">
+  <span></span><span></span><span></span>
+  <div class="mt-2 text-muted">Analyzing your strengths...</div>
+</div>
 
   <!-- Analysis Result -->
   <div *ngIf="analysisResult?.analysis" class="card shadow mt-4">

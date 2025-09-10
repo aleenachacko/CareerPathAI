@@ -1,0 +1,21 @@
+.compass-spin {
+  width: 120px; /* Increase size */
+  height: auto;
+  animation: spin 2s linear infinite;
+  display: block;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.compass-spin {
+  opacity: 0;
+  animation: spin 2s linear infinite, fadeIn 0.5s ease-in forwards;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}

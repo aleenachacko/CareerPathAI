@@ -19,7 +19,7 @@ export class SkillGapAnalysis implements OnInit {
   errorMessage = '';
   userId: string | null = null;
   showRaw = false;
-
+  isLoaading = true;
   constructor(
     private fb: FormBuilder,
     private skillsService: SkillsService,

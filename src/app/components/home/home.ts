@@ -9,6 +9,7 @@ import { AuthService } from '../../services/auth-service';
 })
 export class Home implements OnInit {
   isLoggedIn = false;
+  isLoading=true;
   constructor(private authService: AuthService) { }
   ngOnInit() {
     this.authService.isLoggedIn$.subscribe(status => {
