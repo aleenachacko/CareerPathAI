@@ -17,7 +17,8 @@ const routes: Routes = [{ path: '', component: Home },
       { path: 'resume-builder', component: ResumeBuilder},
       { path: 'skill-gap-analysis', component: SkillGapAnalysis},
       { path: 'profile', component: Profile},
-      { path: '**', redirectTo: '' }];
+      // { path: '**', redirectTo: '' }
+       ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

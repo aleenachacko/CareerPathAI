@@ -8,7 +8,7 @@ import { SessionService } from '../../SessionService';
   selector: 'app-skill-gap-analysis',
   standalone: false,
   templateUrl: './skill-gap-analysis.html',
-  styleUrl: './skill-gap-analysis.css'
+  styleUrls: ['./skill-gap-analysis.css']
 })
 export class SkillGapAnalysis implements OnInit {
   analysisForm: FormGroup;
@@ -17,7 +17,8 @@ export class SkillGapAnalysis implements OnInit {
   analysisResult: any = null;
   isLoading = false;
   errorMessage = '';
-   userId: string | null = null;
+  userId: string | null = null;
+  showRaw = false;
 
   constructor(
     private fb: FormBuilder,
@@ -30,11 +31,13 @@ export class SkillGapAnalysis implements OnInit {
       newDesiredSkill: ['']
     });
   }
+
   ngOnInit(): void {
-     this.userId = this.sessionService.getUserId();
+    this.userId = this.sessionService.getUserId();
     this.loadSkillAnalysis();
   }
-  loadSkillAnalysis() {
+
+  loadSkillAnalysis(): void {
     this.skillsService.getSkillAnalysis(this.userId!).subscribe({
       next: (analysis) => {
         if (analysis) {
@@ -45,40 +48,49 @@ export class SkillGapAnalysis implements OnInit {
       },
       error: (err) => {
         console.error('Failed to load skill analysis', err);
+        this.errorMessage = 'Failed to retrieve skill analysis';
       }
     });
   }
-  addCurrentSkill() {
+
+  addCurrentSkill(): void {
     const skill = this.analysisForm.get('newCurrentSkill')?.value.trim();
     if (skill && !this.currentSkills.includes(skill)) {
       this.currentSkills.push(skill);
       this.analysisForm.get('newCurrentSkill')?.reset();
     }
   }
-  addDesiredSkill() {
+
+  addDesiredSkill(): void {
     const skill = this.analysisForm.get('newDesiredSkill')?.value.trim();
     if (skill && !this.desiredSkills.includes(skill)) {
       this.desiredSkills.push(skill);
       this.analysisForm.get('newDesiredSkill')?.reset();
     }
   }
-  removeCurrentSkill(index: number) {
+
+  removeCurrentSkill(index: number): void {
     this.currentSkills.splice(index, 1);
   }
-  removeDesiredSkill(index: number) {
+
+  removeDesiredSkill(index: number): void {
     this.desiredSkills.splice(index, 1);
   }
-  analyzeSkills() {
+
+  analyzeSkills(): void {
     if (this.currentSkills.length === 0 || this.desiredSkills.length === 0) {
       this.errorMessage = 'Please add both current and desired skills';
       return;
     }
+
     this.isLoading = true;
     this.errorMessage = '';
+
     const analysisData = {
       current_skills: this.currentSkills,
       desired_skills: this.desiredSkills
     };
+
     this.skillsService.analyzeSkills(analysisData).subscribe({
       next: (result) => {
         this.analysisResult = result;
@@ -92,24 +104,34 @@ export class SkillGapAnalysis implements OnInit {
       }
     });
   }
-  saveAnalysis() {
+
+  saveAnalysis(): void {
     if (!this.analysisResult) {
+      this.errorMessage = 'No analysis result to save';
       return;
     }
+
     this.isLoading = true;
     this.errorMessage = '';
+
+    // // ✅ Ensure analysis_result is a string
+    // const formattedResult = typeof this.analysisResult === 'string'
+    //   ? this.analysisResult
+    //   : JSON.stringify(this.analysisResult);
+
     const analysisData = {
       current_skills: this.currentSkills,
       desired_skills: this.desiredSkills,
-      analysis_result: this.analysisResult
+      analysis_result: JSON.stringify(this.analysisResult)
     };
-    this.skillsService.saveSkillAnalysis(analysisData).subscribe({
+
+    this.skillsService.saveSkillAnalysis(this.userId!, analysisData).subscribe({
       next: () => {
         this.isLoading = false;
         alert('Skill analysis saved successfully!');
       },
       error: (err) => {
-        this.errorMessage = 'Failed to save analysis';
+        this.errorMessage = 'Skill analysis save failed';
         this.isLoading = false;
         console.error(err);
       }

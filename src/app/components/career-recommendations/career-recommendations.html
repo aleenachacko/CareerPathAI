@@ -1,4 +1,5 @@
 <div class="container mt-4">
+  <!-- Career Form Card -->
   <div class="card shadow">
     <div class="card-header bg-primary text-white">
       <h4 class="mb-0">Career Recommendations</h4>
@@ -7,6 +8,7 @@
     <div class="card-body">
       <form [formGroup]="careerForm" (ngSubmit)="onSubmit()">
         <div class="row">
+          <!-- Skills -->
           <div class="col-md-6 mb-3">
             <label for="skills" class="form-label">Skills</label>
             <input id="skills" type="text" class="form-control" formControlName="skills" placeholder="Enter your skills" />
@@ -15,6 +17,7 @@
             </div>
           </div>
 
+          <!-- Interests -->
           <div class="col-md-6 mb-3">
             <label for="interests" class="form-label">Interests</label>
             <input id="interests" type="text" class="form-control" formControlName="interests" placeholder="Enter your interests" />
@@ -23,6 +26,7 @@
             </div>
           </div>
 
+          <!-- Experience -->
           <div class="col-md-6 mb-3">
             <label for="experience" class="form-label">Experience</label>
             <input id="experience" type="text" class="form-control" formControlName="experience" placeholder="Enter your experience" />
@@ -31,6 +35,7 @@
             </div>
           </div>
 
+          <!-- Education -->
           <div class="col-md-6 mb-3">
             <label for="education" class="form-label">Education</label>
             <input id="education" type="text" class="form-control" formControlName="education" placeholder="Enter your education" />
@@ -40,39 +45,49 @@
           </div>
         </div>
 
+        <!-- Buttons -->
         <div class="d-flex gap-2 mt-3">
           <button type="submit" class="btn btn-primary" [disabled]="isLoading || careerForm.invalid">Get Recommendations</button>
           <button type="button" class="btn btn-outline-success" (click)="saveProfile()" [disabled]="isLoading || careerForm.invalid">Save Profile</button>
         </div>
 
+        <!-- Error Message -->
         <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
       </form>
     </div>
   </div>
 
+  <!-- Recommendations Card -->
   <div class="card shadow mt-4">
-    <div class="card-header bg-light">
+    <div class="card-header bg-light d-flex justify-content-between align-items-center">
       <h5 class="mb-0">Recommendations</h5>
+      <button *ngIf="rawText" class="btn btn-sm btn-outline-secondary" (click)="showRaw = !showRaw">
+        {{ showRaw ? 'Hide Raw Response' : 'View Raw Response' }}
+      </button>
     </div>
+
     <div class="card-body">
+      <!-- Loading -->
       <div *ngIf="isLoading" class="text-muted">Loading recommendations...</div>
 
+      <!-- No Data -->
       <div *ngIf="!isLoading && recommendations.length === 0 && !rawText" class="text-muted">
         No recommendations yet.
       </div>
 
-      <!-- Structured recommendations -->
-      <ul class="list-group" *ngIf="recommendations.length > 0">
-        <li *ngFor="let rec of recommendations" class="list-group-item">
-          <h6 class="mb-1">{{ rec.title }}</h6>
-          <p class="mb-0 text-muted">{{ rec.description }}</p>
-        </li>
-      </ul>
+      <!-- Structured Recommendations -->
+     <ul class="list-group" *ngIf="recommendations.length > 0">
+  <li *ngFor="let rec of recommendations" class="list-group-item">
+    <h6 class="mb-1" [innerHTML]="formatTitle(rec.title)"></h6>
+    <p class="mb-0 text-muted">{{ rec.description }}</p>
+  </li>
+</ul>
 
-      <!-- Raw fallback response -->
-      <div *ngIf="!isLoading && rawText && recommendations.length === 0" class="mt-3">
-        <h6 class="text-secondary">Raw Response:</h6>
-        <p class="text-muted">{{ rawText }}</p>
+
+      <!-- Raw Response Fallback -->
+      <div *ngIf="showRaw && rawText" class="mt-3">
+        <h6 class="text-secondary">Raw Hugging/ Gemini Response:</h6>
+        <pre class="bg-light p-3 rounded text-muted">{{ rawText }}</pre>
       </div>
     </div>
   </div>

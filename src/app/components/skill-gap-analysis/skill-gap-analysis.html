@@ -1,4 +1,5 @@
 <div class="container mt-4">
+  <!-- Skill Gap Analysis Form -->
   <div class="card shadow">
     <div class="card-header bg-secondary text-white">
       <h4 class="mb-0">Skill Gap Analysis</h4>
@@ -50,12 +51,45 @@
   </div>
 
   <!-- Analysis Result -->
-  <div *ngIf="analysisResult" class="card shadow mt-4">
-    <div class="card-header bg-light">
+  <div *ngIf="analysisResult?.analysis" class="card shadow mt-4">
+    <div class="card-header bg-light d-flex justify-content-between align-items-center">
       <h5 class="mb-0">Analysis Result</h5>
+      <button class="btn btn-sm btn-outline-dark" (click)="showRaw = !showRaw">
+        {{ showRaw ? 'Hide Raw JSON' : 'View Raw JSON' }}
+      </button>
     </div>
+
     <div class="card-body">
-      <pre class="bg-dark text-white p-3 rounded">{{ analysisResult | json }}</pre>
+      <!-- Summary -->
+      <div *ngIf="analysisResult.analysis.summary">
+        <h6 class="fw-bold text-primary">Summary</h6>
+        <p class="text-muted">{{ analysisResult.analysis.summary }}</p>
+      </div>
+
+      <!-- Recommendations -->
+      <div *ngIf="analysisResult.analysis.recommendations?.length">
+        <h6 class="fw-bold text-success">Recommendations</h6>
+        <ul class="list-group mb-3">
+          <li *ngFor="let rec of analysisResult.analysis.recommendations" class="list-group-item">
+            {{ rec }}
+          </li>
+        </ul>
+      </div>
+
+      <!-- Resources -->
+      <div *ngIf="analysisResult.analysis.resources?.length">
+        <h6 class="fw-bold text-secondary">Resources</h6>
+        <ul class="list-group">
+          <li *ngFor="let res of analysisResult.analysis.resources" class="list-group-item">
+            {{ res }}
+          </li>
+        </ul>
+      </div>
+
+      <!-- Raw JSON View -->
+      <pre *ngIf="showRaw" class="bg-dark text-white p-3 rounded mt-3">
+{{ analysisResult | json }}
+      </pre>
     </div>
   </div>
 </div>

@@ -12,7 +12,6 @@ import { Home } from './components/home/home';
 import { Login } from './components/login/login';
 import { Dashboard } from './components/dashboard/dashboard';
 import { Profile } from './components/profile/profile';
-import { AuthService } from './services/auth-service';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 

@@ -7,7 +7,7 @@ import { SessionService } from '../../SessionService';
   selector: 'app-career-recommendations',
   standalone: false,
   templateUrl: './career-recommendations.html',
-  styleUrl: './career-recommendations.css'
+  styleUrls: ['./career-recommendations.css']
 })
 export class CareerRecommendations implements OnInit {
 careerForm: FormGroup;
@@ -52,7 +52,12 @@ careerForm: FormGroup;
       }
     });
   }
+showRaw = false;
 
+formatTitle(title: string): string {
+  // Convert markdown bold to HTML <strong>
+  return title.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+}
   onSubmit() {
     if (this.careerForm.valid) {
       this.isLoading = true;

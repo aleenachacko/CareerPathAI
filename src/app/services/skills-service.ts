@@ -27,7 +27,9 @@ export class SkillsService {
         });
   }
   
-  saveSkillAnalysis(analysisData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/save`, analysisData);
+  saveSkillAnalysis(userId: string,analysisData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/skills/save/${userId}`, analysisData, {
+      headers: this.getAuthHeaders()
+        });
   }
 }
