@@ -8,7 +8,7 @@ import { SessionService } from '../../SessionService';
   selector: 'app-profile',
   standalone: false,
   templateUrl: './profile.html',
-  styleUrls: ['./profile.css'] // ✅ Fixed typo
+  styleUrls: ['./profile.css']
 })
 export class Profile implements OnInit {
   profileForm: FormGroup;
@@ -17,7 +17,12 @@ export class Profile implements OnInit {
   isLoading = false;
   errorMessage = '';
   successMessage = '';
-    userId: string | null = null;
+  userId: string | null = null;
+
+  // 👁️ Password visibility toggles
+  showCurrentPassword = false;
+  showNewPassword = false;
+  showConfirmPassword = false;
 
   constructor(
     private fb: FormBuilder,
@@ -34,10 +39,9 @@ export class Profile implements OnInit {
       currentPassword: ['', Validators.required],
       newPassword: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required]
-    }, { validators: this.passwordMatchValidator }); // ✅ Use `validators` not `validator`
+    }, { validators: this.passwordMatchValidator });
   }
 
-  // ✅ Arrow function to preserve context
   passwordMatchValidator = (group: FormGroup): ValidationErrors | null => {
     const newPassword = group.get('newPassword')?.value;
     const confirmPassword = group.get('confirmPassword')?.value;
@@ -45,7 +49,7 @@ export class Profile implements OnInit {
   };
 
   ngOnInit(): void {
-      this.userId = this.sessionService.getUserId();
+    this.userId = this.sessionService.getUserId();
     this.loadUserProfile();
   }
 
@@ -76,8 +80,7 @@ export class Profile implements OnInit {
     this.userService.updateProfile(this.userId, this.profileForm.value).subscribe({
       next: () => {
         this.successMessage = 'Profile updated successfully!';
-        this.loadUserProfile(); // Refresh UI
-      
+        this.loadUserProfile();
       },
       error: (err) => {
         console.error('Update error:', err);
@@ -97,7 +100,7 @@ export class Profile implements OnInit {
     this.userService.changePassword(this.userId!, this.passwordForm.value).subscribe({
       next: () => {
         this.successMessage = 'Password changed successfully!';
-        this.passwordForm.reset(); // ✅ Reset form after success
+        this.passwordForm.reset();
         this.isLoading = false;
       },
       error: (err) => {

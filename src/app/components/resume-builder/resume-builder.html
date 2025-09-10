@@ -1,12 +1,14 @@
 <div class="container my-5">
   <div class="row justify-content-center">
     <div class="col-lg-8">
+      <!-- Resume Form -->
       <div class="card shadow">
         <div class="card-header bg-primary text-white">
           <h2 class="mb-0">{{ isEditing ? 'Edit Resume' : 'Create Resume' }}</h2>
         </div>
         <div class="card-body">
           <form [formGroup]="resumeForm" (ngSubmit)="onSubmit()">
+            <!-- Title -->
             <div class="mb-3">
               <label for="title" class="form-label">Title</label>
               <input id="title" type="text" class="form-control" formControlName="title" placeholder="e.g. Software Engineer" />
@@ -15,6 +17,7 @@
               </div>
             </div>
 
+            <!-- Summary -->
             <div class="mb-3">
               <label for="summary" class="form-label">Summary</label>
               <textarea id="summary" class="form-control" formControlName="summary" rows="3" placeholder="Brief summary about yourself"></textarea>
@@ -23,19 +26,38 @@
               </div>
             </div>
 
-            <!-- Add dynamic form arrays for experience, education, skills, certifications here -->
+            <!-- Dynamic Sections -->
+            <ng-container *ngFor="let section of [
+              { label: 'Experience', array: experience },
+              { label: 'Education', array: education },
+              { label: 'Skills', array: skills },
+              { label: 'Certifications', array: certifications }
+            ]">
+              <div class="mb-3">
+                <label class="form-label">{{ section.label }}</label>
+                <div *ngFor="let ctrl of section.array.controls; let i = index" class="input-group mb-2">
+                  <input type="text" class="form-control" [formControl]="getFormControl(ctrl)" placeholder="Enter {{ section.label | lowercase }}" />
+                  <button type="button" class="btn btn-outline-danger" (click)="removeItem(section.array, i)">Remove</button>
+                </div>
+                <button type="button" class="btn btn-outline-success" (click)="addItem(section.array)">Add {{ section.label }}</button>
+              </div>
+            </ng-container>
 
+            <!-- Submit & Reset -->
             <div class="d-flex gap-2">
               <button type="submit" class="btn btn-primary" [disabled]="isLoading || resumeForm.invalid">
                 {{ isEditing ? 'Update Resume' : 'Create Resume' }}
               </button>
               <button type="button" class="btn btn-secondary" (click)="resetForm()" [disabled]="isLoading">Reset</button>
             </div>
+
+            <!-- Error Message -->
             <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
           </form>
         </div>
       </div>
 
+      <!-- Resume List -->
       <div class="card shadow mt-4">
         <div class="card-header bg-light">
           <h3 class="mb-0">Your Resumes</h3>
@@ -45,8 +67,13 @@
           <ul class="list-group">
             <li *ngFor="let resume of resumes" class="list-group-item d-flex justify-content-between align-items-center">
               <div>
-                <strong>{{ resume.resume_data.title }}</strong>
-              <div class="text-muted small">{{ resume.resume_data.summary }}</div>    
+                <strong>{{ resume.resume_data?.title }}</strong>
+                <div class="text-muted small">{{ resume.resume_data?.summary }}</div>
+                <div><strong>Experience:</strong> {{ resume.resume_data.experience?.join(', ') }}</div>
+                <div><strong>Education:</strong> {{ resume.resume_data.education?.join(', ') }}</div>
+                <div><strong>Skills:</strong> {{ resume.resume_data.skills?.join(', ') }}</div>
+                <div><strong>Certifications:</strong> {{ resume.resume_data.certifications?.join(', ') }}</div>
+
               </div>
               <div>
                 <button class="btn btn-sm btn-outline-primary me-2" (click)="editResume(resume)">Edit</button>

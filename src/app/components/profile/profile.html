@@ -18,14 +18,7 @@
       </div>
     </div>
 
-    <!-- ✅ Explicit click binding added -->
-    <button
-      type="submit"
-      [disabled]="isLoading || profileForm.invalid"
-      (click)="updateProfile()"
-    >
-      Update Profile
-    </button>
+    <button type="submit" [disabled]="isLoading || profileForm.invalid">Update Profile</button>
 
     <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
     <div *ngIf="successMessage" class="success">{{ successMessage }}</div>
@@ -35,35 +28,49 @@
 
   <h3>Change Password</h3>
   <form [formGroup]="passwordForm" (ngSubmit)="changePassword()">
-    <div class="form-group">
+    <div class="form-group position-relative">
       <label for="currentPassword">Current Password</label>
-      <input id="currentPassword" type="password" formControlName="currentPassword" />
+      <input
+        id="currentPassword"
+        [type]="showCurrentPassword ? 'text' : 'password'"
+        formControlName="currentPassword"
+      />
+      <button type="button" class="toggle-eye" (click)="showCurrentPassword = !showCurrentPassword">
+        {{ showCurrentPassword ? '👁️' : '🙈'  }}
+      </button>
     </div>
 
-    <div class="form-group">
+    <div class="form-group position-relative">
       <label for="newPassword">New Password</label>
-      <input id="newPassword" type="password" formControlName="newPassword" />
+      <input
+        id="newPassword"
+        [type]="showNewPassword ? 'text' : 'password'"
+        formControlName="newPassword"
+      />
+      <button type="button" class="toggle-eye" (click)="showNewPassword = !showNewPassword">
+        {{ showNewPassword ? '👁️' : '🙈' }}
+      </button>
       <div *ngIf="passwordForm.get('newPassword')?.invalid && passwordForm.get('newPassword')?.touched" class="error">
         New password must be at least 6 characters.
       </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group position-relative">
       <label for="confirmPassword">Confirm New Password</label>
-      <input id="confirmPassword" type="password" formControlName="confirmPassword" />
+      <input
+        id="confirmPassword"
+        [type]="showConfirmPassword ? 'text' : 'password'"
+        formControlName="confirmPassword"
+      />
+      <button type="button" class="toggle-eye" (click)="showConfirmPassword = !showConfirmPassword">
+        {{ showConfirmPassword ? '👁️' : '🙈'  }}
+      </button>
       <div *ngIf="passwordForm.hasError('mismatch') && passwordForm.get('confirmPassword')?.touched" class="error">
         Passwords do not match.
       </div>
     </div>
 
-    <!-- ✅ Explicit click binding added -->
-    <button
-      type="submit"
-      [disabled]="isLoading || passwordForm.invalid"
-      (click)="changePassword()"
-    >
-      Change Password
-    </button>
+    <button type="submit" [disabled]="isLoading || passwordForm.invalid">Change Password</button>
 
     <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
     <div *ngIf="successMessage" class="success">{{ successMessage }}</div>

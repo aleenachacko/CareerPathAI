@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray, AbstractControl, FormControl } from '@angular/forms';
 import { ResumeService } from '../../services/resume-service';
 import { AuthService } from '../../services/auth-service';
 
@@ -7,7 +7,7 @@ import { AuthService } from '../../services/auth-service';
   selector: 'app-resume-builder',
   standalone: false,
   templateUrl: './resume-builder.html',
-  styleUrl: './resume-builder.css'
+  styleUrls: ['./resume-builder.css']
 })
 export class ResumeBuilder implements OnInit {
   resumeForm: FormGroup;
@@ -17,9 +17,6 @@ export class ResumeBuilder implements OnInit {
   isLoading = false;
   errorMessage = '';
   userId: string | null = null;
- 
-  // Removed: sessionService is not injected and userId should be set in a method, not at class level
-  
 
   constructor(
     private fb: FormBuilder,
@@ -35,14 +32,37 @@ export class ResumeBuilder implements OnInit {
       certifications: this.fb.array([])
     });
   }
+
   ngOnInit(): void {
     this.loadResumes();
   }
 
-  loadResumes() {
+  // FormArray Getters
+  get experience(): FormArray {
+    return this.resumeForm.get('experience') as FormArray;
+  }
+  get education(): FormArray {
+    return this.resumeForm.get('education') as FormArray;
+  }
+  get skills(): FormArray {
+    return this.resumeForm.get('skills') as FormArray;
+  }
+  get certifications(): FormArray {
+    return this.resumeForm.get('certifications') as FormArray;
+  }
+
+  // Add/Remove Helpers
+  addItem(array: FormArray): void {
+    array.push(this.fb.control(''));
+  }
+
+  removeItem(array: FormArray, index: number): void {
+    array.removeAt(index);
+  }
+
+  loadResumes(): void {
     this.authService.getCurrentUser().subscribe({
       next: (user: any) => {
-      
         this.userId = user?.id || null;
         if (this.userId) {
           this.resumeService.getResumes(this.userId).subscribe({
@@ -63,15 +83,16 @@ export class ResumeBuilder implements OnInit {
     });
   }
 
-  onSubmit() {
+  onSubmit(): void {
     if (this.resumeForm.valid) {
       this.isLoading = true;
       this.errorMessage = '';
       const resumeData = this.resumeForm.value;
-      // Do NOT set resumeData.userId, backend gets userId from authentication
+
       const operation = this.isEditing && this.currentResumeId
         ? this.resumeService.updateResume(this.currentResumeId, resumeData)
         : this.resumeService.createResume(resumeData);
+
       operation.subscribe({
         next: () => {
           this.loadResumes();
@@ -87,36 +108,46 @@ export class ResumeBuilder implements OnInit {
     }
   }
 
-  editResume(resume: any) {
+  editResume(resume: any): void {
     this.isEditing = true;
     this.currentResumeId = resume.id;
+
     this.resumeForm.patchValue({
       title: resume.title,
-      summary: resume.summary,
-      // Patch other form arrays as needed
+      summary: resume.summary
     });
+
+    this.setFormArray(this.experience, resume.experience);
+    this.setFormArray(this.education, resume.education);
+    this.setFormArray(this.skills, resume.skills);
+    this.setFormArray(this.certifications, resume.certifications);
   }
 
-  deleteResume(id: number) {
+  deleteResume(id: number): void {
     if (confirm('Are you sure you want to delete this resume?')) {
       this.resumeService.deleteResume(id).subscribe({
-        next: () => {
-          this.loadResumes();
-        },
-        error: (err) => {
-          console.error('Failed to delete resume', err);
-        }
+        next: () => this.loadResumes(),
+        error: (err) => console.error('Failed to delete resume', err)
       });
     }
   }
 
-  resetForm() {
+  resetForm(): void {
     this.resumeForm.reset();
+    this.experience.clear();
+    this.education.clear();
+    this.skills.clear();
+    this.certifications.clear();
     this.isEditing = false;
     this.currentResumeId = null;
+    this.errorMessage = '';
   }
-}
 
-function getUserId(): string {
-  throw new Error('Function not implemented.');
+  getFormControl(ctrl: AbstractControl): FormControl {
+  return ctrl as FormControl;
+}
+  private setFormArray(array: FormArray, values: string[]): void {
+    array.clear();
+    values?.forEach(val => array.push(this.fb.control(val)));
+  }
 }

@@ -23,23 +23,54 @@
                                 Valid email is required
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" formControlName="password">
-                            <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
-                                class="text-danger">
-                                Password must be at least 6 characters
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="confirmPassword" class="form-label">Confirm Password</label>
-                            <input type="password" class="form-control" id="confirmPassword"
-                                formControlName="confirmPassword">
-                            <div *ngIf="registerForm.hasError('mismatch') && registerForm.get('confirmPassword')?.touched"
-                                class="text-danger">
-                                Passwords do not match
-                            </div>
-                        </div>
+                      <div class="mb-3 position-relative">
+  <label for="password" class="form-label">Password</label>
+  
+  <!-- Input with padding to make space for the toggle -->
+  <input [type]="showPassword ? 'text' : 'password'"
+         class="form-control pe-5"
+         id="password"
+         formControlName="password">
+
+  <!-- Toggle Button: absolutely positioned inside input field -->
+  <button type="button"
+          class="btn btn-sm position-absolute top-50 end-0 translate-middle-y me-2"
+          (click)="togglePasswordVisibility()"
+          tabindex="-1"
+          style="z-index: 2;">
+    {{ showPassword ? '👁️' : '🙈' }}
+  </button>
+
+  <!-- Validation Message -->
+  <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+       class="text-danger mt-1">
+    Password must be at least 6 characters
+  </div>
+</div>
+                    <div class="mb-3 position-relative">
+  <label for="confirmPassword" class="form-label">Confirm Password</label>
+
+  <!-- Input with padding for toggle button -->
+  <input [type]="showConfirmPassword ? 'text' : 'password'"
+         class="form-control pe-5"
+         id="confirmPassword"
+         formControlName="confirmPassword">
+
+  <!-- Toggle Button -->
+  <button type="button"
+          class="btn btn-sm position-absolute top-50 end-0 translate-middle-y me-2"
+          (click)="toggleConfirmPasswordVisibility()"
+          tabindex="-1"
+          style="z-index: 2;">
+    {{ showPassword ? '👁️' : '🙈' }}
+  </button>
+
+  <!-- Validation Message -->
+  <div *ngIf="registerForm.hasError('mismatch') && registerForm.get('confirmPassword')?.touched"
+       class="text-danger mt-1">
+    Passwords do not match
+  </div>
+</div>
                         <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
                         <button type="submit" class="btn btn-primary"
                             [disabled]="registerForm.invalid">Register</button>

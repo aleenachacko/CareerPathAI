@@ -12,6 +12,16 @@ import { Router } from '@angular/router';
 export class Register {
   registerForm: FormGroup;
   errorMessage = '';
+showPassword: boolean = false;
+showConfirmPassword: boolean = false;
+
+togglePasswordVisibility(): void {
+  this.showPassword = !this.showPassword;
+}
+
+toggleConfirmPasswordVisibility(): void {
+  this.showConfirmPassword = !this.showConfirmPassword;
+}
 
   constructor(
     private fb: FormBuilder,

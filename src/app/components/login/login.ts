@@ -13,6 +13,12 @@ export class Login {
   loginForm: FormGroup;
   errorMessage = '';
   isLoading = false;
+showPassword: boolean = false;
+
+togglePasswordVisibility(): void {
+  this.showPassword = !this.showPassword;
+}
+
   userId: any;
   constructor(
     private fb: FormBuilder,

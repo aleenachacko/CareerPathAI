@@ -1,0 +1,16 @@
+.form-group {
+  position: relative;
+}
+
+.toggle-eye {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
