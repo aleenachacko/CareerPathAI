@@ -64,13 +64,13 @@
 </div>
 
   <!-- Analysis Result -->
-  <div *ngIf="analysisResult?.analysis" class="card shadow mt-4">
+  <!-- <div *ngIf="analysisResult?.analysis" class="card shadow mt-4">
     <div class="card-header bg-light d-flex justify-content-between align-items-center">
       <h5 class="mb-0">Analysis Result</h5>
       <button class="btn btn-sm btn-outline-dark" (click)="showRaw = !showRaw">
         {{ showRaw ? 'Hide Raw JSON' : 'View Raw JSON' }}
       </button>
-    </div>
+    </div> -->
 
     <div class="card-body">
       <!-- Summary -->
@@ -100,9 +100,9 @@
       </div>
 
       <!-- Raw JSON View -->
-      <pre *ngIf="showRaw" class="bg-dark text-white p-3 rounded mt-3">
-{{ analysisResult | json }}
-      </pre>
-    </div>
+      <!-- <pre *ngIf="showRaw" class="bg-dark text-white p-3 rounded mt-3"> -->
+<!-- {{ analysisResult | json }} -->
+      <!-- </pre> -->
+    <!-- </div> -->
   </div>
 </div>

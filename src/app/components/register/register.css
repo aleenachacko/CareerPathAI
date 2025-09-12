@@ -1,15 +1,20 @@
 .form-group {
   position: relative;
+  margin-bottom: 1rem;
+}
+
+.form-group input {
+  padding-right: 2.5rem; /* space for the eye icon */
 }
 
 .toggle-eye {
   position: absolute;
-  right: 10px;
+  right: 17px;
   top: 50%;
   transform: translateY(-50%);
   background: none;
   border: none;
-  font-size: 1.2rem;
+  font-size: 2.75rem;
   cursor: pointer;
   padding: 0;
   line-height: 1;

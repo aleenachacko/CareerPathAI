@@ -65,30 +65,27 @@
         {{ showRaw ? 'Hide Raw Response' : 'View Raw Response' }}
       </button>
     </div>
-
     <div class="card-body">
-      <!-- Loading -->
-      <div *ngIf="isLoading" class="text-muted">Loading recommendations...</div>
+      <!-- Loading Spinner -->
+      <div class="text-center my-4" *ngIf="isLoading">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Calibrating your CareerCraft AI...</span>
+        </div>
+        <div class="mt-2 text-muted">Calibrating your CareerCraft AI...</div>
+      </div>
 
       <!-- No Data -->
-      <div *ngIf="!isLoading && recommendations.length === 0 && !rawText" class="text-muted">
+      <div *ngIf="!isLoading && (!recommendations || recommendations.length === 0) && !rawText" class="text-muted">
         No recommendations yet.
       </div>
-   <div class="text-center my-4" *ngIf="isLoading">
-  <div class="spinner-border text-primary" role="status">
-    <span class="visually-hidden">Calibrating your CareerCraft AI...</span>
-  </div>
-  <div class="mt-2 text-muted">Calibrating your CareerCraft AI...</div>
-</div>
 
-      <!-- Structured Recommendations -->
-     <ul class="list-group" *ngIf="recommendations.length > 0">
-  <li *ngFor="let rec of recommendations" class="list-group-item">
-    <h6 class="mb-1" [innerHTML]="formatTitle(rec.title)"></h6>
-    <p class="mb-0 text-muted">{{ rec.description }}</p>
-  </li>
-</ul>
-
+      <!-- Structured Recommendations (array of objects) -->
+      <ul class="list-group" *ngIf="recommendations && recommendations.length > 0">
+        <li *ngFor="let rec of recommendations" class="list-group-item">
+          <h6 class="mb-1" [innerHTML]="rec.title"></h6>
+          <p class="mb-0 text-muted">{{ rec.description }}</p>
+        </li>
+      </ul>
 
       <!-- Raw Response Fallback -->
       <div *ngIf="showRaw && rawText" class="mt-3">

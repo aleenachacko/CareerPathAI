@@ -95,7 +95,7 @@ export class SkillGapAnalysis implements OnInit {
       next: (result) => {
         this.analysisResult = result;
         this.isLoading = false;
-        this.loadSkillAnalysis(); // Refresh from server
+        //this.loadSkillAnalysis(); // Refresh from server
       },
       error: (err) => {
         this.errorMessage = 'Failed to analyze skills';

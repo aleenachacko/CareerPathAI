@@ -65,7 +65,8 @@ formatTitle(title: string): string {
       
       this.careerService.getRecommendations(this.userId !,this.careerForm.value).subscribe({
         next: (data) => {
-        this.rawText = data.rawText || ''; 
+        this.recommendations = data.recommendations || [];
+        this.rawText = data.raw_response || '';
           this.isLoading = false;
         },
         error: (err) => {
